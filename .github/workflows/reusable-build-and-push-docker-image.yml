@@ -60,13 +60,6 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.resolve-image-version.outputs.image-exists == 'false'
 
-#    permissions:
-#      contents: read
-#      # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-#      id-token: write
-#      # Ability to push image to GitHub container registry
-#      packages: write
-
     env:
       GHCR_REGISTRY: ghcr.io
       GHCR_REPOSITORY: ghcr.io/${{ github.repository }}
