@@ -16,9 +16,28 @@ jobs:
         run: |
           docker run --rm --interactive ghcr.io/hadolint/hadolint hadolint --ignore DL3008 - < Dockerfile
 
+  resolve-image-version:
+    name: Resolve Docker image
+    runs-on: ubuntu-latest
+
+    outputs:
+      image-version: ${{ steps.resolve-image-version.outputs.image-version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve Docker image version
+        id: resolve-image-version
+        # language=sh
+        run: |
+          image_version=$(git rev-parse --short=8 HEAD)
+          echo "image-version=${image_version}" >> "${GITHUB_OUTPUT}"
+
   build-and-push-docker-image:
     name: Build and push Docker image
-    needs: lint
+    needs:
+      - lint
+      - resolve-image-version
     runs-on: ubuntu-latest
 
     permissions:
@@ -50,7 +69,7 @@ jobs:
           # see https://github.com/docker/metadata-action?tab=readme-ov-file#priority-attribute
           tags: |
             # Set the highest priority for sha tag, so it can be used as the main image tag
-            type=sha,format=short
+            type=raw,value=${{ needs.resolve-image-version.outputs.image-version }},priority=10000
             
             # Set latest tag for default branch
             type=raw,value=latest,enable={{is_default_branch}}
