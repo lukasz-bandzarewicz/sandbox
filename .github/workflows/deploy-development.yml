@@ -1,0 +1,38 @@
+name: 🚢 Deploy development
+
+on:
+  workflow_dispatch:
+    inputs:
+      namespace:
+        description: 'Custom namespace for the deployment'
+        type: string
+        required: true
+
+jobs:
+  build:
+    name: Build and push Docker image
+    uses: ./.github/workflows/reusable-build-and-push-docker-image.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
+  deploy:
+    environment:
+      name: development
+      url: https://app.${{ inputs.namespace }}.development-example.com
+    name: Deploy image ${{ needs.build.outputs.image-version }} to development
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy image
+        env:
+          IMAGE_VERSION: ${{ needs.build.outputs.image-version }}
+        # language=sh
+        run: |
+          echo "::notice::Deploying ${IMAGE_VERSION} to development"
