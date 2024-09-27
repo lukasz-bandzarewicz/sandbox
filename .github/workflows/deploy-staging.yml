@@ -28,4 +28,4 @@ jobs:
           IMAGE_VERSION: ${{ needs.build.outputs.image-version }}
         # language=sh
         run: |
-          echo "Deploying ${IMAGE_VERSION} to staging"
+          echo "::notice::Deploying ${IMAGE_VERSION} to staging"
