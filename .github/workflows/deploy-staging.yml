@@ -15,6 +15,7 @@ jobs:
 
   deploy:
     environment: staging
+    name: Deploy to staging
     needs: build
     runs-on: ubuntu-latest
 
