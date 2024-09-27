@@ -11,3 +11,7 @@ jobs:
     name: Build and push Docker image
     uses: ./.github/workflows/reusable-build-and-push-docker-image.yml
     secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
