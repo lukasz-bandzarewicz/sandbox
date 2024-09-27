@@ -54,7 +54,8 @@ jobs:
         run: |
           # TODO: Use $GITHUB_REPOSITORY instead of hardcoding the repository name
           
-          curl -H "Authorization: Bearer ${GITHUB_TOKEN}" "https://ghcr.io/v2/lukasz-bandzarewicz/sandbox/tags/list"
+          GHCR_TOKEN=$(echo "${GITHUB_TOKEN}" | base64)
+          curl -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/lukasz-bandzarewicz/sandbox/tags/list"
 
   build-and-push-docker-image:
     name: Build and push Docker image
