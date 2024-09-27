@@ -1,5 +1,5 @@
 name: 🚢 Deploy development
-run-name: 🚢 Deploy to development ${{ inputs.namespace }} namespace
+run-name: 🚢 Deploy development ${{ inputs.namespace }} namespace
 
 on:
   workflow_dispatch:
