@@ -8,7 +8,6 @@ on:
         value: ${{ jobs.resolve-image-version.outputs.image-version }}
 
 jobs:
-  # TODO: Skip the build if the image is already built
   resolve-image-version:
     name: Resolve Docker Image Version
     runs-on: ubuntu-latest
