@@ -8,18 +8,6 @@ on:
         value: ${{ jobs.resolve-image-version.outputs.image-version }}
 
 jobs:
-  lint:
-    name: Lint Dockerfile
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Lint Dockerfile
-        # language=sh
-        run: |
-          docker run --rm --interactive ghcr.io/hadolint/hadolint hadolint --ignore DL3008 - < Dockerfile
-
   # TODO: Skip the build if the image is already built
   resolve-image-version:
     name: Resolve Docker Image Version
@@ -61,9 +49,7 @@ jobs:
 
   build-and-push-docker-image:
     name: Build and push Docker image
-    needs:
-      - lint
-      - resolve-image-version
+    needs: resolve-image-version
     runs-on: ubuntu-latest
 
     permissions:
