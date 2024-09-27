@@ -43,10 +43,9 @@ jobs:
           IMAGE_VERSION: ${{ steps.resolve-image-version.outputs.image-version }}
         # language=sh
         run: |
-          # TODO: Use $GITHUB_REPOSITORY instead of hardcoding the repository name
-          
           GHCR_TOKEN=$(echo "${GITHUB_TOKEN}" | base64)
-          if curl --silent -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/lukasz-bandzarewicz/sandbox/tags/list" | yq '.tags[]' | grep "^${IMAGE_VERSION}$"; then
+          
+          if curl --silent -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/${GITHUB_REPOSITORY}/tags/list" | yq '.tags[]' | grep "^${IMAGE_VERSION}$"; then
             echo "Image version ${IMAGE_VERSION} exists in the GitHub Container Registry"
           else
             echo "::error::Image version ${IMAGE_VERSION} does not exist in the GitHub Container Registry"
