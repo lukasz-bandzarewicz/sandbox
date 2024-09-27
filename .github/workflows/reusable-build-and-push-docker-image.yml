@@ -1,4 +1,4 @@
-name: ⚒️ Build and Push Docker Image
+name: ⚒️ Build and push docker image
 
 on:
   workflow_call:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   resolve-image-version:
-    name: Resolve Docker Image Version
+    name: Resolve Docker image version
     runs-on: ubuntu-latest
 
     outputs:
