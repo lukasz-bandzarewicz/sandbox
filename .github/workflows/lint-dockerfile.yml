@@ -1,4 +1,4 @@
-name: 🔍 Dockerfile Lint
+name: 🔍 Lint Dockerfile
 
 on:
   push:

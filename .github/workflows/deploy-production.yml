@@ -14,8 +14,10 @@ jobs:
       packages: write
 
   deploy:
-    environment: production
-    name: Deploy to production
+    environment:
+      name: production
+      url: https://app.example.com
+    name: Deploy image ${{ needs.build.outputs.image-version }} to production
     needs: build
     runs-on: ubuntu-latest
 
@@ -23,5 +25,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to production
-        run: echo "Deploying to production"
+      - name: Deploy image
+        env:
+          IMAGE_VERSION: ${{ needs.build.outputs.image-version }}
+        # language=sh
+        run: |
+          echo "::notice::Deploying ${IMAGE_VERSION} to production"

@@ -14,7 +14,9 @@ jobs:
       packages: write
 
   deploy:
-    environment: staging
+    environment:
+      name: staging
+      url: https://app.staging-example.com
     name: Deploy image ${{ needs.build.outputs.image-version }} to staging
     needs: build
     runs-on: ubuntu-latest
@@ -28,4 +30,4 @@ jobs:
           IMAGE_VERSION: ${{ needs.build.outputs.image-version }}
         # language=sh
         run: |
-          echo "Deploying ${IMAGE_VERSION} to staging"
+          echo "::notice::Deploying ${IMAGE_VERSION} to staging"
