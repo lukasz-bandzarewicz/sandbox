@@ -15,6 +15,7 @@ jobs:
 
     outputs:
       image-version: ${{ steps.resolve-image-version.outputs.image-version }}
+      image-exists: ${{ steps.check-image-exists.outputs.image-exists }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +39,7 @@ jobs:
             core.summary.write();
               
       - name: Check if the image exists in the container registry
+        id: check-image-exists
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IMAGE_VERSION: ${{ steps.resolve-image-version.outputs.image-version }}
@@ -46,15 +48,17 @@ jobs:
           GHCR_TOKEN=$(echo "${GITHUB_TOKEN}" | base64)
           
           if curl --silent -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/${GITHUB_REPOSITORY}/tags/list" | yq '.tags[]' | grep "^${IMAGE_VERSION}$"; then
-            echo "Image version ${IMAGE_VERSION} exists in the GitHub Container Registry"
+            echo "::warning::Image version ${IMAGE_VERSION} already exists in the GitHub Container Registry"
+            echo "image-exists=true" >> "${GITHUB_OUTPUT}"
           else
-            echo "::error::Image version ${IMAGE_VERSION} does not exist in the GitHub Container Registry"
+            echo "image-exists=false" >> "${GITHUB_OUTPUT}"
           fi 
 
   build-and-push-docker-image:
     name: Build and push Docker image
     needs: resolve-image-version
     runs-on: ubuntu-latest
+    if: needs.resolve-image-version.outputs.image-exists == 'false'
 
     permissions:
       contents: read
