@@ -8,7 +8,6 @@ on:
         value: ${{ jobs.resolve-image-version.outputs.image-version }}
 
 jobs:
-  # TODO: Skip the build if the image is already built
   resolve-image-version:
     name: Resolve Docker Image Version
     runs-on: ubuntu-latest
@@ -59,13 +58,6 @@ jobs:
     needs: resolve-image-version
     runs-on: ubuntu-latest
     if: needs.resolve-image-version.outputs.image-exists == 'false'
-
-    permissions:
-      contents: read
-      # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-      id-token: write
-      # Ability to push image to GitHub container registry
-      packages: write
 
     env:
       GHCR_REGISTRY: ghcr.io
