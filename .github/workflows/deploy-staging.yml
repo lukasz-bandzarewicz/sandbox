@@ -4,8 +4,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  build:
+    name: Build and push Docker image
+    uses: ./.github/workflows/reusable-build-and-push-docker-image.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
   deploy:
     environment: staging
+    name: Deploy to staging
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
