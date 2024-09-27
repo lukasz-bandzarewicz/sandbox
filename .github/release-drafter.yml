@@ -1,0 +1,12 @@
+version-template: $MAJOR
+name-template: v$NEXT_MAJOR_VERSION
+tag-template: v$NEXT_MAJOR_VERSION
+template: |
+  # 🚢 What's Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_MAJOR_VERSION
+
+exclude-labels:
+  - "skip-changelog"
