@@ -35,8 +35,7 @@ jobs:
 
     env:
       GHCR_REGISTRY: ghcr.io
-      GHCR_IMAGE_URI: ghcr.io/${{ github.repository }}/sandbox
-      COMPARE_TAG: latest
+      GHCR_REPOSITORY: ghcr.io/${{ github.repository }}
 
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +46,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.GHCR_IMAGE_URI }}
+            ${{ env.GHCR_REPOSITORY }}
 
           labels: |
             org.opencontainers.image.description=Example
@@ -70,3 +69,6 @@ jobs:
           context: .
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.GHCR_REPOSITORY }}:cache
+          # Export layers from all build stages
+          cache-to: type=registry,ref=${{ env.GHCR_REPOSITORY }}:cache,mode=max
