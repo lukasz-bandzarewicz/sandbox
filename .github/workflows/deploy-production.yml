@@ -14,7 +14,9 @@ jobs:
       packages: write
 
   deploy:
-    environment: production
+    environment:
+      name: production
+      url: https://app.example.com
     name: Deploy image ${{ needs.build.outputs.image-version }} to production
     needs: build
     runs-on: ubuntu-latest
