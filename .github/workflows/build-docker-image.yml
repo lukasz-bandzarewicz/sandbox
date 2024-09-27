@@ -63,3 +63,10 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
