@@ -1,0 +1,65 @@
+name: Build Python Docker image
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint Dockerfile
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        # language=sh
+        run: |
+          docker run --rm --interactive ghcr.io/hadolint/hadolint hadolint --ignore DL3008 - < Dockerfile
+
+  build-and-push-docker-image:
+    name: Build and push Docker image
+    needs: lint
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+      id-token: write
+      # Ability to push image to GitHub container registry
+      packages: write
+      # Give Docker Scout permission to write a comment
+      pull-requests: write
+
+    env:
+      GHCR_REGISTRY: ghcr.io
+      GHCR_IMAGE_URI: ghcr.io/${{ github.repository }}/sandbox
+      COMPARE_TAG: latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Extract tags and labels from the GitHub context
+      - name: Prepare image metadata
+        id: metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.GHCR_IMAGE_URI }}
+
+          labels: |
+            org.opencontainers.image.description=Example
+
+          # Set the highest priority for sha-* tag, so it can be used as the main image tag,
+          # see https://github.com/docker/metadata-action?tab=readme-ov-file#priority-attribute
+          tags: |
+            # Set the highest priority for sha-* tag, so it can be used as the main image tag
+            type=sha,prefix=sha-,format=short
+            # Set latest tag for master branch
+            # type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
