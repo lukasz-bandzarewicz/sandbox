@@ -21,7 +21,7 @@ jobs:
           docker run --rm --interactive ghcr.io/hadolint/hadolint hadolint --ignore DL3008 - < Dockerfile
 
   resolve-image-version:
-    name: Resolve Docker image
+    name: Resolve Docker Image Version
     runs-on: ubuntu-latest
 
     outputs:
@@ -94,7 +94,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           tags: ${{ steps.metadata.outputs.tags }}
@@ -102,3 +102,17 @@ jobs:
           cache-from: type=registry,ref=${{ env.GHCR_REPOSITORY }}:cache
           # Export layers from all build stages
           cache-to: type=registry,ref=${{ env.GHCR_REPOSITORY }}:cache,mode=max
+          push: true
+          # Disable adding additional Docker metadata, therefore the image is more compliant with OCI spec.
+          # See https://github.com/docker/build-push-action/issues/820
+          provenance: false
+
+      - uses: actions/github-script@v7
+        env:
+          IMAGE_VERSION: ${{ needs.resolve-image-version.outputs.image-version }}
+        with:
+          # language=javascript
+          script: |
+            const { IMAGE_VERSION } = process.env;
+            core.summary.addRaw(`Image version: <code>${IMAGE_VERSION}</code>`, true);
+            core.summary.write();
