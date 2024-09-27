@@ -79,8 +79,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
           cache-from: type=registry,ref=${{ env.GHCR_REPOSITORY }}:cache
           # Export layers from all build stages
           cache-to: type=registry,ref=${{ env.GHCR_REPOSITORY }}:cache,mode=max
