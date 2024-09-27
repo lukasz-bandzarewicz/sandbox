@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to staging
+      - name: Deploy image ${{ needs.build.outputs.image-version }} to staging
         env:
           IMAGE_VERSION: ${{ needs.build.outputs.image-version }}
         # language=sh
