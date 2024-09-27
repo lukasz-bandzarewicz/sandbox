@@ -1,4 +1,6 @@
 FROM debian:bookworm-slim
 
-ENTRYPOINT ["echo"]
-CMD ["Hello, world!"]
+COPY . /app
+
+ENTRYPOINT ["cat"]
+CMD ["/app/src/message.txt"]
