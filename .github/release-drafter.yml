@@ -2,11 +2,15 @@ version-template: $MAJOR
 name-template: v$NEXT_MAJOR_VERSION
 tag-template: v$NEXT_MAJOR_VERSION
 template: |
-  # 🚢 What's Changed
+  # What's Changed
 
   $CHANGES
 
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_MAJOR_VERSION
+
+  ### Impact of Change
+  
+  Customers will experience the new behaviors described above.  No outages or adverse impact is expected.
 
 exclude-labels:
   - "skip-changelog"
