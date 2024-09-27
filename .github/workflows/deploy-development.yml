@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       namespace:
-        description: 'Custom namespace for the deployment'
+        description: 'Development namespace'
         type: string
         required: true
 
