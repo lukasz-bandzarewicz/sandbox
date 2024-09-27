@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # write permission is required to create a github release
+      # Write permission is required to create a github release
       contents: write
-      # write permission is required for autolabeler
+      # Write permission is required for autolabeler
       # otherwise, read permission is required at least
       pull-requests: write
 
@@ -25,6 +25,6 @@ jobs:
       - uses: release-drafter/release-drafter@v6
         with:
           config-name: release-drafter.yml
-          disable-autolabeler: false
+          disable-autolabeler: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
