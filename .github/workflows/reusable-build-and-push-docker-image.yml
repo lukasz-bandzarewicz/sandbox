@@ -52,7 +52,9 @@ jobs:
       - name: Check if the image exists in the container registry
         # language=sh 
         run: |
-          curl -H "Authorization: Bearer ${GHCR_TOKEN}" https://ghcr.io/v2/lukasz-bandzarewicz/sandbox/tags/list
+          # TODO: Use $GITHUB_REPOSITORY instead of hardcoding the repository name
+          
+          curl -H "Authorization: Bearer ${GITHUB_TOKEN}" "https://ghcr.io/v2/lukasz-bandzarewicz/sandbox/tags/list"
 
   build-and-push-docker-image:
     name: Build and push Docker image
