@@ -27,8 +27,6 @@ jobs:
       id-token: write
       # Ability to push image to GitHub container registry
       packages: write
-      # Give Docker Scout permission to write a comment
-      pull-requests: write
 
     env:
       GHCR_REGISTRY: ghcr.io
