@@ -1,0 +1,16 @@
+name: Deploy unknown
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    environment: unknown
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to unknown
+        run: echo "Deploying to unknown"
