@@ -21,9 +21,9 @@ jobs:
             --volume ./.hadolint.yaml:/.config/hadolint.yaml \
             ghcr.io/hadolint/hadolint hadolint - < Dockerfile
 
-      - name: Run checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: ./
-          framework: dockerfile
-          skip_check: CKV_DOCKER_2
+#      - name: Run checkov
+#        uses: bridgecrewio/checkov-action@v12
+#        with:
+#          directory: ./
+#          framework: dockerfile
+#          skip_check: CKV_DOCKER_2

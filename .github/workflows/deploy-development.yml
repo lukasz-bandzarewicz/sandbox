@@ -22,7 +22,7 @@ jobs:
     environment:
       name: development
       url: https://app.${{ inputs.namespace }}.development-example.com
-    name: Deploy image ${{ needs.build.outputs.image-version }} to development
+    name: Deploy image ${{ needs.build.outputs.image-version }} to development namespace ${{ inputs.namespace }}
     needs: build
     runs-on: ubuntu-latest
 
