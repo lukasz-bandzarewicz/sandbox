@@ -63,6 +63,10 @@ jobs:
             type=ref,event=tag
             type=ref,event=pr
 
+      - uses: docker/setup-buildx-action@v3
+        with:
+          install: true # Sets up docker build command as an alias to docker buildx
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
