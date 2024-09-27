@@ -50,7 +50,9 @@ jobs:
             core.summary.write();
               
       - name: Check if the image exists in the container registry
-        # language=sh 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # language=sh
         run: |
           # TODO: Use $GITHUB_REPOSITORY instead of hardcoding the repository name
           
