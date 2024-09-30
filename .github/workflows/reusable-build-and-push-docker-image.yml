@@ -24,19 +24,9 @@ jobs:
         # language=sh
         run: |
           image_version=$(git rev-parse --short=8 HEAD)
+          echo "::notice::Resolved image version: ${image_version}"
           echo "image-version=${image_version}" >> "${GITHUB_OUTPUT}"
 
-      - name: Summary
-        uses: actions/github-script@v7
-        env:
-          IMAGE_VERSION: ${{ steps.resolve-image-version.outputs.image-version }}
-        with:
-          # language=javascript
-          script: |
-            const { IMAGE_VERSION } = process.env;
-            core.summary.addRaw(`Image version: <code>${IMAGE_VERSION}</code>`, true);
-            core.summary.write();
-              
       - name: Check if the image exists in the container registry
         id: check-image-exists
         env:
@@ -47,7 +37,7 @@ jobs:
           GHCR_TOKEN=$(echo "${GITHUB_TOKEN}" | base64)
           
           if curl --silent -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/${GITHUB_REPOSITORY}/tags/list" | yq '.tags[]' | grep "^${IMAGE_VERSION}$"; then
-            echo "::warning::Image version ${IMAGE_VERSION} already exists in the GitHub Container Registry"
+            echo "::notice::Image version ${IMAGE_VERSION} already exists in the GitHub Container Registry"
             echo "image-exists=true" >> "${GITHUB_OUTPUT}"
           else
             echo "image-exists=false" >> "${GITHUB_OUTPUT}"

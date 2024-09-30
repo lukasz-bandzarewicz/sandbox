@@ -4,7 +4,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    environment: production
+    name: Test production deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test deployment
+        # language=sh
+        run: |
+          echo "::notice::Testing production deployment"
+
   build:
+    needs: test
     name: Build and push Docker image
     uses: ./.github/workflows/reusable-build-and-push-docker-image.yml
     secrets: inherit
