@@ -13,12 +13,31 @@ jobs:
       id-token: write
       packages: write
 
+  pre-deploy:
+    environment: production
+    name: Pre-deploy to production
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pre-deploy
+        env:
+          IMAGE_VERSION: ${{ needs.build.outputs.image-version }}
+        # language=sh
+        run: |
+          echo "::notice::Pre-deploying ${IMAGE_VERSION} to production"
+
   deploy:
     environment:
       name: production
       url: https://app.example.com
     name: Deploy image ${{ needs.build.outputs.image-version }} to production
-    needs: build
+    needs:
+      - build
+      - pre-deploy
     runs-on: ubuntu-latest
 
     steps:

@@ -10,7 +10,7 @@ template: |
 
   ### Impact of Change
   
-  Customers will experience the new behaviors described above.  No outages or adverse impact is expected.
+  Customers will experience the new behaviors described above. No outages or adverse impact is expected.
 
 exclude-labels:
   - "skip-changelog"
